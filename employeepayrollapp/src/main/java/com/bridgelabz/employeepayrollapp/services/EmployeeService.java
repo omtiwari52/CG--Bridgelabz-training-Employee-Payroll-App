@@ -32,16 +32,22 @@ public class EmployeeService {
     }
 
     //method to update employee details
-    public EmployeeEntity updateEmployee(Long id, EmployeeEntity employee){
-        Optional<EmployeeEntity> existingEmp = getEmployeeById(id);
-        if(existingEmp.isPresent()){
-            EmployeeEntity employee1 = existingEmp.get();
-            employee1.setName(employee.getName());
-            employee1.setDepartment(employee.getDepartment());
-            employee1.setSalary(employee.getSalary());
-            return employeeRepository.save(employee1);
+    public EmployeeEntity updateEmployee(Long id, EmployeeEntity updatedEmployee) {
+        EmployeeEntity existingEmployee = employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+        // Only update non-null values
+        if (updatedEmployee.getName() != null) {
+            existingEmployee.setName(updatedEmployee.getName());
         }
-        return null;
+        if (updatedEmployee.getDepartment() != null) {
+            existingEmployee.setDepartment(updatedEmployee.getDepartment());
+        }
+        if (updatedEmployee.getSalary() != null) {
+            existingEmployee.setSalary(updatedEmployee.getSalary());
+        }
+
+        return employeeRepository.save(existingEmployee);
     }
 
     //method to delete employee
@@ -52,5 +58,4 @@ public class EmployeeService {
         }
         return false;
     }
-
 }
