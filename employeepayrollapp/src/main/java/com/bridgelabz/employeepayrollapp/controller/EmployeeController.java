@@ -46,7 +46,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/add")    //add new employee to the application
-    public EmployeeEntity addNewEmployee(@RequestBody EmployeeEntity employee) {
+    public EmployeeEntity addNewEmployee(@Valid @RequestBody EmployeeEntity employee) {
         log.info("Adding new employee: {}", employee);
         EmployeeEntity employee1 = employeeService.saveEmployee(employee);
         log.info("Employee added successfully with id: {}", employee1.getId());
